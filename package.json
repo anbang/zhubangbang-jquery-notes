@@ -1,0 +1,23 @@
+{
+  "name": "zhuanbang-jquery-notes",
+  "version": "1.0.0",
+  "description": "朱安邦的jQuery学习笔记",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Broszhu/zhuanbang-jquery-notes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Broszhu/zhuanbang-jquery-notes/issues"
+  },
+  "homepage": "https://github.com/Broszhu/zhuanbang-jquery-notes#readme",
+  "devDependencies": {
+    "webpack": "^1.13.2"
+  }
+}
