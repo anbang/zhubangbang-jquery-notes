@@ -1,4 +1,5 @@
 var $page=$("body"),
+    picWrap=$page.find("#picad"),
     $adBig=$page.find("#adBig"),
     $adSmall=$page.find("#adSmall"),
     $btnGroup=$page.find(".j-btn-group");
@@ -31,7 +32,7 @@ var pageUtility={
         //点击关闭
         $page.on("click",".j-colse",function (e) {
             e.preventDefault();
-            $btnGroup.hide()
+            picWrap.hide()
         });
     },
     initAnimate:function () {
