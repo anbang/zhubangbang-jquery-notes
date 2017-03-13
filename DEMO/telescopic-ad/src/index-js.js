@@ -37,6 +37,7 @@ var pageUtility={
             self.displayShot(btnShowSmall,"none");
             self.displayShot(btnShowBig,"block");
         };
+
         //点击关闭
         btnClose.onclick=function (e) {
             e.preventDefault();
