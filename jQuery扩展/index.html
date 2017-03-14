@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="../lib/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    $.extend({
+        min: function(a, b){return a < b?a:b; },
+        max: function(a, b){return a > b?a:b; }
+    }); //为jquery扩展了min,max两个方法
+
+    //使用扩展的方法（通过“$.方法名”调用）：
+    console.log("a=10,b=20,max="+$.max(10,20)+",min="+$.min(10,20));
+
+</script>
+</body>
+</html>

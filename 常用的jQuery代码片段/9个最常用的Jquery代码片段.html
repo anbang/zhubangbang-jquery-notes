@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="./lib/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    //1、图片预加载
+    var cache = [];// 参数是相对于当前页面的图像路径
+    $.preLoadImages = function() {
+        var args_len = arguments.length;
+        for (var i = args_len; i--;) {
+            var cacheImage = document.createElement('img');
+            cacheImage.src = arguments[i];
+            cache.push(cacheImage);
+        }
+    };
+    jQuery.preLoadImages("image1.gif", "/images/2.png");
+
+    //2、 在新窗口打开链接 (target=”blank”)
+    $("a[@rel$='external']").click(function(){this.target = "_blank";});
+    /*Usage:<a href="http://www.jq-school.com" rel="external">http://www.jq-school.com</a>*/
+
+    //3、平滑滚动页面到某个锚点
+    $(document).ready(function() {
+        $("a.topLink").click(function() {
+            $("html, body").animate({
+                scrollTop: $($(this).attr("href")).offset().top + "px"
+            }, {
+                duration: 500,
+                easing: "swing"
+            });
+            return false;
+        });
+    });
+
+    //4、鼠标滑动时的渐入和渐出
+    $(document).ready(function(){
+        $(".thumbs img").fadeTo("slow", 0.6); // 这设置的透明度
+        $(".thumbs img").hover(function(){
+            $(this).fadeTo("slow", 1.0);
+        },function(){
+            $(this).fadeTo("slow", 0.6);
+        });
+    });
+
+    //5、制作等高的列
+    var max_height = 0;
+    $("div.col").each(function(){
+        if ($(this).height() > max_height) { max_height = $(this).height(); }
+    });
+    $("div.col").height(max_height);
+
+    //6、在一些老的浏览器上启用 HTML5 的支持
+    (function(){
+        if(!/*@cc_on!@*/0)
+            return;
+        var e = "abbr,article,aside,audio,bb,canvas,datagrid,datalist,details,dialog,eventsource,figure,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video".split(','),
+            i=e.length;
+            while(i--){document.createElement(e[i])}
+    })();
+
+    //然后在head中引入该js
+    /*<!--[if lt IE 9]>
+    < script src="http://html5shim.googlecode.com/svn/trunk/html5.js">< /script>
+    <![endif]-->*/
+
+
+    // 7、测试浏览器是否支持某些 CSS3 属性
+    var supports = (function() {
+        var div = document.createElement('div'),
+            vendors = 'Khtml Ms O Moz Webkit'.split(' '),
+            len = vendors.length;
+
+        return function(prop) {
+            if ( prop in div.style ) return true;
+
+            prop = prop.replace(/^[a-z]/, function(val) {
+                return val.toUpperCase();
+            });
+
+            while(len--) {
+                if ( vendors[len] + prop in div.style ) {
+                    // browser supports box-shadow. Do what you need.
+                    // Or use a bang (!) to test if the browser doesn't.
+                    return true;
+                }
+            }
+            return false;
+        };
+    })();
+
+    if ( supports('textShadow') ) {
+        document.documentElement.className += ' textShadow';
+    }
+
+    //8、获取 URL 中传递的参数
+    $.urlParam = function(name){
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (!results) { return 0; }
+        return results[1] || 0;
+    };
+
+    //9、禁用表单的回车键提交
+    $page.on("keypress","#form",function(e) {
+        e = e || window.event;
+        if (e.keyCode==13){
+            return false;
+        }
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<script src="./lib/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    $("p").each(function(i){
+            this.style.color=['#f00','#0f0','#00f'][ i ]
+        })
+        .click(function(){
+            console.log($(this).html())
+        });
+
+</script>
+</body>
+</html>

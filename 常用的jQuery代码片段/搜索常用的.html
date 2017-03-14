@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="./lib/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    var $page=$("#page-demo");//获取当前页面的
+    var url = '/financial/user_red_packets';//当前的页面路径
+    var date=$page.find("#custom-date").val();//默认获取时间；
+    var deviceId=$page.find("#keyword").val();//获取默认的id值；
+
+    var state=$page.find("#card_status").find("li").filter(".active").find("a").data("state")||"",//获取当前的状态值；
+        keyword = $('#keyword').val();//获取当前的关健字；
+
+    var pageUtility={
+        init:function(){
+            this.bind();
+        },
+        bind:function(){
+            var self=this;
+            //点击搜索的时候；
+            $page.on("click","#search",function(e){
+                e.preventDefault();
+                deviceId=$page.find("#keyword").val();
+                self.searchModule();
+            });
+
+            //重置的时候
+            $page.on("click", "#reset", function () {
+                window.location.href = url;
+            });
+
+            //鼠标回车搜素的时候；
+            $page.on("keypress","#keyword",function(e){
+                e = e || window.event;
+                if (e.keyCode==13){
+                    deviceId = $(this).val();
+                    self.searchModule()
+                }
+            });
+
+            //鼠标离开的时候
+            $page.on("blur","#keyword",function(e){
+                deviceId = $(this).val();
+            });
+
+            //红包状态选择
+            $page.on("click","#card_status .filter-item",function(e){
+                e.preventDefault();
+                var $self=$(this);
+                state=$self.find("a").data("state")||"";
+                self.searchModule()
+            });
+        },
+        //统一的搜索模块
+        searchModule:function(){
+            window.location.href = url + '?id=' + deviceId + '&date=' + date ;
+        }
+    };
+    pageUtility.init();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="../lib/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    $.extend({
+        includePath: '',
+        include: function(file) {
+            var files = typeof file == "string" ? [file]:file;
+            for (var i = 0; i < files.length; i++) {
+                var name = files[i].replace(/^\s|\s$/g, "");
+                var att = name.split('.');
+                var ext = att[att.length - 1].toLowerCase();
+                var isCSS = ext == "css";
+                var tag = isCSS ? "link" : "script";
+                var attr = isCSS ? " type='text/css' rel='stylesheet' " : " language='javascript' type='text/javascript' ";
+                var link = (isCSS ? "href" : "src") + "='" + $.includePath + name + "'";
+                if ($(tag + "[" + link + "]").length == 0) {
+                    document.write("<" + tag + attr + link + "></" + tag + ">");
+                }
+            }
+        }
+    });
+
+    //页面使用代码如下：
+    $.includePath = 'http://www.jsdaxue.com/test/';
+    $.include(['manhua_date.js', 'jquery.lazyload.js', 'style.css']);
+    /*
+    * 动态加载的文件如下
+    * http://www.jsdaxue.com/test/manhua_date.js
+    * http://www.jsdaxue.com/test/jquery.lazyload.js
+    * http://www.jsdaxue.com/test/style.css
+    * */
+</script>
+</body>
+</html>
