@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../lib/jquery/jquery-1.11.2.min.js"></script>
+    <style>
+        .someClass{background-color: #00FF00;}
+    </style>
+</head>
+<body>
+<div id="page">
+    <div class="test-log">222222222222</div>
+    <ul class="test-ul">
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+        <li><a href="https://translate.google.cn/#en/zh-CN/switch">1</a></li>
+    </ul>
+    <div class="j-test-replace-with">111</div>
+    <br>
+    <input type="checkbox" value="1">
+    <input type="checkbox" value="2">
+    <input type="checkbox" value="3">
+    <input type="checkbox" value="4">
+    <input type="checkbox" value="5">
+    <input type="checkbox" value="6">
+    <input type="button" class="j-switch" value="全选/全不选">
+</div>
+<script>
+    var $page=$("#page");
+    $page.on("click","ul > li",function (e) {
+        e.preventDefault();
+        window.location=$(this).find("a").attr("href");
+    });
+
+    $page.find(".j-test-replace-with").replaceWith(function () {
+        var tempDiv=document.createElement("div");
+        tempDiv.innerHTML="innerHTML";
+        tempDiv.className="test";
+        return tempDiv;//"可以是文本，也可以的HTML标签"
+    });
+
+    $page.find(".area_name").delay(3000).hide(500);
+
+    jQuery.fn.center = function () {
+        this.css('position', 'absolute');
+        this.css('top', ($(window).height() - this.height())/ 2 +$(window).scrollTop() + 'px');
+        this.css('left', ($(window).width() - this.width())/ 2 + $(window).scrollLeft() + 'px');
+        return this;
+    };
+    //这样来使用上面的函数：
+    $(".area_name").center();
+
+    var arrInputValues = [];
+    $("input[name='test']").each(function () {
+        arrInputValues.push($(this).val());
+    });
+    console.log(arrInputValues);
+
+    (function ($) {
+        $.fn.stripHtml = function () {
+            var regexp = /<("[^"]*"|'[^']*'|[^'">])*>/gi;
+            this.each(function () {
+                $(this).html($(this).html().replace(regexp, ""));
+            });
+            return $(this);
+        }
+    })(jQuery);
+    //用法：
+    console.log($('test-ul').stripHtml());
+
+    jQuery.log = jQuery.fn.log = function (msg) {
+        if (console) {
+            console.log(msg, this);
+        }
+        return this;
+    };
+    $page.find(".test-log").hide().log('test-log').addClass('someClass');
+
+    var newwindow;
+    $page.on('click' ,"a", function (e) {
+        e.preventDefault();
+        newwindow = window.open($(this).attr('href'), '', 'height=500,width=800');
+        if (window.focus) {
+            newwindow.focus();
+        }
+    });
+
+    var tog = false;
+    $page.on("click",".j-switch",function (e) {
+        e.preventDefault();
+        $page.find("input[type=checkbox]").prop("checked", !tog);
+        tog = !tog;
+    });
+
+    //如果元素的值和输入的文本相匹配的话,该元素将被返回
+    $page.find('.someClass').filter(function () {
+        return $(this).attr('value') == $('input#someId').val();
+    });
+
+
+    var dt = new Date();
+    dt.setSeconds(dt.getSeconds() + 60);
+    document.cookie = "cookietest=1;expires=" + dt.toGMTString();
+    var cookiesEnabled = document.cookie.indexOf("cookietest=") != -1;
+    if (!cookiesEnabled) {
+        console.log("没有启用cookie",document.cookie.cookietest);
+    }else{
+        console.log("启用cookie",document.cookie);
+    }
+
+    var date = new Date();
+    date.setTime(date.getTime() + (10 * 60 * 1000));//10的地方可修改
+    $.cookie('example', 'foo', { expires: date });
+
+    $.fn.replaceUrl = function () {
+        var regexp = /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi;
+        this.each(function () {
+            $(this).html(
+                $(this).html().replace(regexp, '<a href="$1">$1</a>')
+            );
+        });
+        return $(this);
+    };
+    //用法　
+    $('p').replaceUrl();
+
+
+
+</script>
+</body>
+</html>
