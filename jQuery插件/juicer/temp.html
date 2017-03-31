@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .help{color: orange;}
+        .default{color: #696969;}
+    </style>
+    <script src="./src/juicer.js"></script>
+    <script src="../../lib/jquery/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+<div id="page-juicer">
+    <div id="header"></div>
+    <div id="bodyer">
+        <input type="button" value="获取最新新闻" class="j-loading-data">
+        <div>
+            <h1>当前的新闻条数 <span class="j-total">1</span> 条</h1>
+        </div>
+        <div class="temp-juicer">
+            <ul class="test-data j-temp-juicer">
+                <li>
+                    <p>第一条</p>
+                    <p>Title: <a href="#">这是标题1</a></p>
+                    <p>Content: <span class="default">这里是主要的内容</span></p>
+                    <p>Desription <span class="help">这里是描述信息</span></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="footer"></div>
+</div>
+<script>
+
+    //这里的数据是写死的，仅供测试使用，实际环境中可能是由于后端借口返回；
+    var tempData= {
+        data:[
+            {
+                "num": "第1条",
+                "title": "this is title 1",
+                "content": "这是一段内容啊啊啊啊啊啊啊嗷嗷",
+                "desription": "这是对内容的重点描述",
+                "amount":15600
+            },        {
+                "num": "第2条",
+                "title": "this is title 2",
+                "content": "这是一段内容啊啊啊啊啊啊啊嗷嗷",
+                "desription": "这是对内容的重点描述",
+                "amount":345900
+            },        {
+                "num": "第3条",
+                "title": "this is title 3",
+                "content": "这是一段内容啊啊啊啊啊啊啊嗷嗷",
+                "desription": "这是对内容的重点描述",
+                "amount":1220
+            },        {
+                "num": "第4条",
+                "title": "this is title 4",
+                "content": "这是一段内容啊啊啊啊啊啊啊嗷嗷",
+                "desription": "这是对内容的重点描述",
+                "amount":10
+            },        {
+                "num": "第5条",
+                "title": "this is title 5",
+                "content": "这是一段内容啊啊啊啊啊啊啊嗷嗷",
+                "desription": "这是对内容的重点描述",
+                "amount":300
+            },        {
+                "num": "第6条",
+                "title": "this is title 6",
+                "content": "这是一段内容啊啊啊啊啊啊啊嗷嗷",
+                "desription": "这是对内容的重点描述",
+                "amount":900
+            }
+        ],
+        total:6
+    };
+
+    //金额美化函数
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        /*
+         * 参数说明：
+         * number：要格式化的数字
+         * decimals：保留几位小数
+         * dec_point：小数点符号
+         * thousands_sep：千分位符号
+         * */
+        console.log(number, decimals, dec_point, thousands_sep);
+        number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+        var n = !isFinite(+number) ? 0 : +number,
+
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function (n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.floor(n * k) / k;
+            };
+        s = (prec ? toFixedFix(n, prec) : '' + Math.floor(n)).split('.');
+        var re = /(-?\d+)(\d{3})/;
+
+        while (re.test(s[0])) {
+            s[0] = s[0].replace(re, "$1" + sep + "$2");
+        }
+
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+    juicer.register('beautifyAmount',number_format);//注册函数
+    //注销函数
+    //juicer.unregister('beautifyAmount');
+
+    //这里是渲染的模版
+    var listTpl = juicer([
+        '{@each data as item,index}',
+        '<li>',
+        '     <p>${item.num}</p>',
+        '     <p>Title: <a href="#">${item.title}</a></p>',
+        '     <p>Content: <span class="default">${item.content}</span></p>',
+        '     <p>Desription <span class="help">${item.desription}</span></p>',
+        '     <p>源金额是：<span>${item.amount}分</span>,自定义美化后是： <span class="help">${(item.amount/100)|beautifyAmount,"2",".",","} 元</span></p>',
+        '</li>',
+        '{@/each}'
+    ].join(""));
+
+    var $page=$("#page-juicer");
+
+    var pageUtility={
+        init:function () {
+            this.bind();
+        },
+        bind:function () {
+            //click loading btn
+            $page.on("click",".j-loading-data",function (e) {
+                e.preventDefault();
+                $page.find(".j-temp-juicer").empty().append(listTpl.render(tempData));
+                $page.find(".j-total").text(tempData.total);
+            });
+        }
+    };
+    pageUtility.init();
+
+
+</script>
+</body>
+</html>
