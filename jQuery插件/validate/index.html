@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../../lib/jquery/jquery-1.11.2.min.js"></script>
+<script src="./src/jquery.validate.modi.js"></script>
+<body>
+validata相关的
+<form action="###" class="j-test-form">
+    <fieldset>
+        <div>
+            <label for="test01">
+                <p>项目</p>
+                <input type="text" id="test01" name="">
+            </label>
+            <label for="test02">
+                <p>项目</p>
+                <input type="text" id="test02" name="">
+            </label>
+            <label for="test03">
+                <p>项目</p>
+                <input type="text" id="test03" name="">
+            </label>
+            <label for="test04">
+                <p>项目</p>
+                <input type="text" id="test04" name="">
+            </label>
+            <label for="test05">
+                <p>项目</p>
+                <input type="text" id="test05" name="">
+            </label>
+        </div>
+    </fieldset>
+    <input type="submit" value="提交数据">
+</form>
+
+<script>
+    var $page=$("body");
+    var $form=$page.find("form.j-test-form");
+    var pageUtility={
+        init:function () {
+            this.validate();
+        },
+        validate:function () {
+            $form.validate({
+                debug:true
+            });
+        }
+    };
+    pageUtility.init();
+
+    console.dir($.validator);
+</script>
+</body>
+</html>
