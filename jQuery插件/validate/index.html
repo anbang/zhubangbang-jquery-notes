@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    /* error 是检测未通过时，插件默认加的class名 */
+    .error{
+        background-color: bisque;
+    }
+    label.error{
+        color: brown;
+        background-color: transparent;
+    }
+</style>
 <script src="../../lib/jquery/jquery-1.11.2.min.js"></script>
 <script src="./src/jquery.validate.modi.js"></script>
 <body>
@@ -13,27 +23,40 @@ validata相关的
         <div>
             <label for="test01">
                 <p>项目</p>
-                <input type="text" id="test01" name="">
+                <input type="text" id="test01" name="test_01">
             </label>
             <label for="test02">
                 <p>项目</p>
-                <input type="text" id="test02" name="">
+                <input type="text" id="test02" name="test_02" class="ignore">
             </label>
             <label for="test03">
                 <p>项目</p>
-                <input type="text" id="test03" name="">
+                <input type="text" id="test03" name="test_03">
             </label>
             <label for="test04">
                 <p>项目</p>
-                <input type="text" id="test04" name="">
+                <input type="text" id="test04" name="test_04">
             </label>
             <label for="test05">
                 <p>项目</p>
-                <input type="text" id="test05" name="">
+                <input type="text" id="test05" name="test_05">
+            </label>
+            <label for="test06">
+                <p>姓</p>
+                <input type="text" id="test06" name="first_name">
+            </label>
+            <label for="test07">
+                <p>姓</p>
+                <input type="text" id="test07" name="last_name">
             </label>
         </div>
+        <input type="hidden" name="test_hidden">
     </fieldset>
     <input type="submit" value="提交数据">
+
+    <div class="j-msg-error" style="display: none;">
+        <span>这里的集中错误的消息</span>
+    </div>
 </form>
 
 <script>
@@ -45,7 +68,88 @@ validata相关的
         },
         validate:function () {
             $form.validate({
-                debug:true
+//                debug:true,
+                ignore:".ignore,:hidden",
+                groups:{
+                    nameGroup:"first_name last_name"
+                },
+                onsubmit: true,
+                wrapper:"div",
+                rules:{
+                    test_01:{
+                        required:true,
+                        min:10,
+                        max:100
+                    },
+                    test_02:{
+                        required:true
+                    },
+                    test_03:{
+                        required:true
+                    },
+                    test_04:{
+                        required:true
+                    },
+                    test_05:{
+                        required:true
+                    },
+                    test_hidden:{
+                        required:true
+                    },
+                    first_name:{
+                        required:true
+                    },
+                    last_name:{
+                        required:true
+                    }
+                },
+                messages:{
+                    test_01:{
+                        required:"请输入test01",
+                        min:"最小值不低于10",
+                        max:"最大值不高于100"
+                    },
+                    test_02:{
+                        required:"请输入test02"
+                    },
+                    test_03:{
+                        required:"请输入test03"
+                    },
+                    test_04:{
+                        required:"请输入test04"
+                    },
+                    test_05:{
+                        required:"请输入test05"
+                    },
+                    test_hidden:{
+                        required:"这是隐藏input的，不应该出现这段提示消息"
+                    },
+                    first_name:{
+                        required:"请输入贵姓"
+                    },
+                    last_name:{
+                        required:"请输入您的名字"
+                    }
+                },
+                invalidHandler:function (event, validator) {
+                    //event: 事件
+                    //validator：验证器的实例
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        var message = errors == 1
+                            ? '有1项需要输入的数据没有验证通过'
+                            : '您有 ' + errors + ' 项需要输入的数据没有验证通过';
+                        $(".j-msg-error").show().find("span").html(message);
+                    } else {
+                        $(".j-msg-error").hide();
+                    }
+                    console.log("用户填写的数据无法通过验证",event, validator);
+                },
+                submitHandler:function (form) {
+                    //form:当前验证的form
+                    var $fm=$(form);
+                    console.log("这里通过验证后的回调函数",form,$fm);
+                }
             });
         }
     };
