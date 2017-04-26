@@ -244,3 +244,65 @@ $.each(obj, fn)：通用的迭代函数。可用于近似地迭代对象和数�
     jQuery.noConflict();// 开始使用jQuery
     jQuery("div p").hide();// 使用其他库的 $()
     $("content").style.display = 'none';
+
+### 如何禁用右键单击上下文菜单
+    $(document).bind('contextmenu', function (e) {
+        return false;
+    });
+
+### 把某个元素放在屏幕的最中间
+    jQuery.fn.center = function () {
+         this.css('position', 'absolute');
+         this.css('top', ($(window).height() - this.height())/ +$(window).scrollTop() + 'px');
+         this.css('left', ($(window).width() - this.width())/ 2 + $(window).scrollLeft() + 'px');
+         return this;
+    }
+    //这样来使用上面的函数：
+    $(element).center();
+
+### 如何切换页面上的所有复选框
+    var tog = false;
+    // 或者为true，如果它们在加载时为被选中状态的话
+    $('a').click(function () {
+        $("input[type=checkbox]").attr("checked", !tog);
+        tog = !tog;
+    });
+
+### 如何基于一些输入文本来过滤一个元素列表
+
+    //如果元素的值和输入的文本相匹配的话
+    //该元素将被返回
+    $('.someClass').filter(function () {
+        return $(this).attr('value') == $('input#someId').val();
+        // 如果包含输入内容就显示的，可以用contaions这个方法来判断的
+    })
+
+### 如何把整个的列表元素（LI）变成可点击的
+
+
+    <ul>
+    <li><a href="#">Link 1</a></li>
+    <li><a href="#">Link 2</a></li>
+    <li><a href="#">Link 3</a></li>
+    <li><a href="#">Link 4</a></li>
+    </ul>
+
+        $page.on('click','ul li',function (e) {
+            e.preventDefault();
+            window.location.href = $(this).find("a").attr("href");
+        });
+
+### 如何检查图像是否已经被完全加载进来
+    $('#theImage').attr('src', 'image.jpg').load(function () {
+        alert('This Image Has Been Loaded');
+    });
+
+### 检查cookie是否启用
+    var dt = new Date();
+    dt.setSeconds(dt.getSeconds() + 60);
+    document.cookie = "cookietest=1; expires=" + dt.toGMTString();
+    var cookiesEnabled = document.cookie.indexOf("cookietest=") != -1;
+    if (!cookiesEnabled) {
+        //没有启用cookie
+    }
+    //原理是，用过设置一个临时的cookie，然后判断这个cookie是否存在，如果不存在则说明，浏览器没有开启cookie

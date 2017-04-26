@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body>
+<body id="page-test">
 <select>
     <optgroup label="Numbers" class="green">
         <option value="1">One</option>
@@ -42,8 +42,17 @@
         <span>word</span>
     </p>
 </div>
+
+<ul>
+    <li><a href="#">Link 1</a></li>
+    <li><a href="##">Link 2</a></li>
+    <li><a href="###">Link 3</a></li>
+    <li><a href="####">Link 4</a></li>
+</ul>
+
 <script src="./lib/jquery/jquery-1.11.2.min.js"></script>
 <script>
+    var $page=$("#page-test");
     $("p").each(function(i){
             this.style.color=['#f00','#0f0','#00f'][ i ]
         })
@@ -51,7 +60,15 @@
             console.log($(this).html())
         });
 
-    $("#test01>span").css("color","red")
+    $("#test01>span").css("color","red");
+
+    var $tempTarfet=$page.find('#test01').find(':contains("hello")').css('backgroundColor','blue');
+    console.log($tempTarfet);
+
+    $page.on('click','ul li',function (e) {
+        e.preventDefault();
+        window.location.href = $(this).find("a").attr("href");
+    });
 
 </script>
 </body>

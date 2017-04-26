@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .green option{
+            background-color:#0F0;
+        }
+
+        .blue option{
+            background-color:#00F;
+        }
+    </style>
+</head>
+<body id="page-test">
+    <div id="test01">
+        <span>
+            hello
+        </span>
+        <p>
+            hhhh
+            <span>word</span>
+        </p>
+    </div>
+<script src="../lib/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    var $page=$("#page-test");
+
+    //包含hello的内容，进行改变
+    var $tempTarfet=$page.find('#test01').find(':contains("hello")').css('backgroundColor','blue');
+    console.log($tempTarfet)
+
+</script>
+</body>
+</html>
